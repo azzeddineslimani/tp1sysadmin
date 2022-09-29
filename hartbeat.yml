@@ -1,0 +1,11 @@
+---
+- hosts: all
+    become: true
+  tasks:
+    - name: Install prerequisites
+      apt: name={{ item }} update_cache=yes state=latest force_apt_get=yes
+      loop: [ 'aptitude' ]
+    
+    - name: Install heartbeat
+      apt: name={{ item }} update_cache=yes state=latest
+      loop: [ 'heartbeat' ]
