@@ -1,0 +1,14 @@
+all:
+    children:     
+       webserver:
+         hosts:
+           10.49.22.177:
+           
+       database:
+         hosts:
+           192.168.180.136:
+           192.168.180.137:
+       syslog:
+         hosts:
+           192.168.148.10:
+ 
