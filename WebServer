@@ -1,6 +1,6 @@
 ---
   - name: Installation d'un serveur web
-  - hosts: all
+  - hosts: serveurweb
     vars:
       http_port: 80
       max_clients: 200
