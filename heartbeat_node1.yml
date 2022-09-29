@@ -1,0 +1,57 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Install prerequisites
+      apt: name={{ item }} update_cache=yes state=latest force_apt_get=yes
+      loop: [ 'aptitude' ]
+    
+    - name: Install heartbeat
+      apt: name={{ item }} update_cache=yes state=latest
+      loop: [ 'heartbeat' ]
+
+    - name: cat
+      shell: 
+      cmd: |
+       cat << EOF > /etc/heartbeat/ha.cf
+       logfile /var/log/ha-log
+       logfacility local0
+       keepalive 2
+       deadtime 10
+       bcast eth0
+       node node1 node2
+       auto_failback no
+       respawn hacluster /usr/lib/heartbeat/ipfail
+       apiauth ipfail gid=haclient uid=hacluster
+       EOF
+    - name: cat
+      shell: 
+      cmd: |
+       cat << EOF > /etc/heartbeat/haresources
+       node1 IPaddr::192.168.148.8/24/eth0
+       EOF
+    - name: cat   
+      shell: 
+      cmd: |
+       cat << EOF > /etc/heartbeat/authkeys
+       auth 3
+       3 md5 eve
+       EOF
+    - name: Change file ownership, group and permissions
+      ansible.builtin.file:
+      path: /etc/heartbeat/authkeys
+      mode: '0600'
+    - name: Start service foo, based on running process /usr/bin/foo
+      ansible.builtin.service:
+      name: heartbeat
+      pattern: /etc/init.d/heartbeat
+      state: stopped
+    - name: Execute the command in remote shell
+      shell: update-rc.d -f heartbeat remove
+
+    - name: Start service foo, based on running process /usr/bin/foo
+      ansible.builtin.service:
+      name: heartbeat
+      pattern: /etc/init.d/heartbeat
+      state: started
+    
