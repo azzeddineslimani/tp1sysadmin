@@ -1,19 +1,17 @@
 all:
-    children:     
-       webservers:
-         hosts:
+  children:     
+     webservers:
+        hosts:
            web:
-             ansible_host: 10.49.22.177:
-           
-       databases:
-         hosts:
+             ansible_host: 10.49.22.177     
+     databases:
+        hosts:
            db1:
-             ansible_host: 192.168.180.136:
+             ansible_host: 192.168.180.136
            db2:
-             ansible_host: 192.168.180.137:
-       
-       syslog:
-         hosts:
+             ansible_host: 192.168.180.137
+     syslog:
+        hosts:
            log:
-             ansible_host: 192.168.148.10:
+             ansible_host: 192.168.148.10
  
