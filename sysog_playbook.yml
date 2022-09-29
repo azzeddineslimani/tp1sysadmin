@@ -1,0 +1,19 @@
+    ---
+    - name: Configure syslog server
+      hosts: syslog
+      become: true
+      tasks:
+      - name: Install rsyslog
+        apt:
+          name: rsyslog
+          state: present
+    
+      - name: Start service rsyslog, if not started
+        ansible.builtin.service:
+          name: rsyslog
+          state: started
+    
+      - name: Enable service rsyslog to start on boot
+        ansible.builtin.service:
+          name: rsyslog
+          enabled: yes
