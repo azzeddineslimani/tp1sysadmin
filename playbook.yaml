@@ -1,0 +1,27 @@
+---
+  - name: Installation d'un serveur web
+  - hosts: all
+    vars:
+      http_port: 80
+      max_clients: 200
+    remote_user: root
+    tasks:
+    - name: Prendre la dernière version d'apache
+      apt:
+        name: httpd
+        state: latest
+    - name: Ecrire la config du fichier apache
+      template:
+        src: /srv/httpd.j2
+        dest: /etc/httpd.conf
+      notify:
+      - restart apache
+    - name: Vérifier que apache est lancé
+      service:
+        name: httpd
+        state: started
+    handlers:
+      - name: restart apache
+        service:
+          name: httpd
+
