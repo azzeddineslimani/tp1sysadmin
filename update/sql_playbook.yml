@@ -1,5 +1,5 @@
 ---
-- hosts: node3
+- hosts: db
   become: true
   vars_files:
     - vars/default.yml

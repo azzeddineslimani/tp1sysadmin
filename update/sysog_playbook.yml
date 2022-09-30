@@ -1,6 +1,6 @@
 ---
     - name: Configure syslog server
-      hosts: node3
+      hosts: syslog
       become: true
       tasks:
       - name: Install rsyslog
