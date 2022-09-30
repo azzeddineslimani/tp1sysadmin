@@ -1,5 +1,5 @@
 ---
-- hosts: node1
+- hosts: web1
   become: true
   tasks:
     - name: Install prerequisites
