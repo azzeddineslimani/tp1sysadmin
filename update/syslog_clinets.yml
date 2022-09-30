@@ -1,0 +1,20 @@
+---
+- hosts: web
+  become: true
+  tasks:
+    - name: Start service
+      ansible.builtin.service:
+          name: rsyslog
+          state: restarted
+
+
+    - name: Swap/ edit lines in config
+      lineinfile:
+          dest: /etc/rsyslog.conf
+          line: '*.* @192.168.148.11:514' #new text
+          regexp: '#' #old text
+    - name: Swap/ edit lines in config
+      lineinfile:
+          dest: /etc/rsyslog.conf
+          line: '#' #new text
+          regexp: '#module(load="imudp")' #old tex

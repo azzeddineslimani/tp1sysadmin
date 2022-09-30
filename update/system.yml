@@ -1,0 +1,15 @@
+---
+- hosts: all
+  become: true
+  tasks: 
+    - name: key from path 
+      authorized_key:
+       user: root
+       state: present
+       key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    - name: add user
+      ansible.builtin.user:
+        name: "{{item}}"
+      with_items: 
+        - esiee1
+        - esiee2

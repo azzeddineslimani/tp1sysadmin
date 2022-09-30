@@ -1,0 +1,44 @@
+---
+- hosts: node2
+  become: true
+  tasks:
+    - name: Swap/ edit lines in config
+        lineinfile:
+          dest: /etc/rsyslog.conf
+          line: '*.* @192.168.148.11:514' #new text
+          regexp: '# provides UDP syslog reception' #old text
+    - name: Swap/ edit lines in config
+        lineinfile:
+          dest: /etc/rsyslog.conf
+          line: '*.* @@192.168.148.11:514' #new text
+          regexp: '#module(load="imudp")' #old text
+    - name: Swap/ edit lines in config
+        lineinfile:
+          dest: /etc/rsyslog.conf
+          line: '$ActionQueueFileName queue' #new text
+          regexp: '# Use traditional timestamp format.)' #old text
+    - name: Swap/ edit lines in config
+        lineinfile:
+          dest: /etc/rsyslog.conf
+          line: '$ActionQueueMaxDiskSpace 1g' #new text
+          regexp: '# Filter duplicated messages)' #old text
+    - name: Swap/ edit lines in config
+        lineinfile:
+          dest: /etc/rsyslog.conf
+          line: '$ActionQueueSaveOnShutdown on' #new text
+          regexp: '# Set the default permissions for all log files.
+' #old text
+    - name: Swap/ edit lines in config
+        lineinfile:
+          dest: /etc/rsyslog.conf
+          line: '$ActionQueueType LinkedList' #new text
+          regexp: '# Where to place spool and state files' #old text
+    - name: Swap/ edit lines in config
+        lineinfile:
+          dest: /etc/rsyslog.conf
+          line: '$ActionResumeRetryCount -1' #new text
+          regexp: '# Include all config files in /etc/rsyslog.d/' #old text
+    - name: Start service
+      ansible.builtin.service:
+          name: rsyslog
+          state: restarted
