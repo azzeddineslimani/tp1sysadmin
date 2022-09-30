@@ -1,0 +1,28 @@
+- hosts: all
+  become: true
+  tasks:
+    - name: key from patch
+      authorized_key:
+        user: thomas
+        state: present
+        key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+        
+     
+    - name: key from patch
+      authorized_key:
+        user: nod1
+        state: present
+        key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+        
+    - name: key from patch
+      authorized_key:
+        user: dris
+        state: present
+        key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+        
+        
+    - name: key from patch
+      authorized_key:
+        user: user
+        state: present
+        key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
