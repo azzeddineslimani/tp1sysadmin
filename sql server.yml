@@ -1,0 +1,14 @@
+- hosts: all
+  user: dris
+  user: user 
+  become: true
+
+  tasks:
+    - name: Install MySQL
+      apt:
+       name: "{{ item }}"
+      with_items:
+       - mysql-server
+
+    - name: Start the MySQL service
+      action: service name=mysqld state=started
