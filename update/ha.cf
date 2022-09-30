@@ -3,7 +3,7 @@ logfacility local0
 keepalive 2
 deadtime 10
 bcast en0s3
-node node1 node2
+node web1 web2
 auto_failback no
 respawn hacluster /usr/lib/heartbeat/ipfail
 apiauth ipfail gid=haclient uid=hacluster
