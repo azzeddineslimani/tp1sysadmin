@@ -4,7 +4,7 @@
   tasks: 
     - name: key from path 
       authorized_key:
-       user: sfleury
+       user: root
        state: present
        key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
     - name: add user

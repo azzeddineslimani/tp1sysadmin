@@ -1,5 +1,5 @@
 ---
-- hosts: db
+- hosts: node4
   become: true
   vars_files:
     - vars/default.yml
@@ -38,7 +38,7 @@
     - name: Swap/ edit lines in config
         lineinfile:
           dest: /etc/mysql/mysql.conf.d/mysqld.cnf
-          line: 'bind-address            = 192.168.157.187' #new text
+          line: 'bind-address            = 192.168.148.12' #new text
           regexp: 'bind-address            = 127.0.0.1' #old text
     - name: Swap/ edit lines in config
         lineinfile:

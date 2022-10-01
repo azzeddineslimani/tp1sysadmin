@@ -11,15 +11,15 @@
       loop: [ 'heartbeat' ]
     - name: Copy file
       ansible.builtin.copy:
-       src: ~/update/ha.cf
+       src: /home/azzeddine/tp_ansible/ansible-playbooks/lamp_ubuntu1804/ha.cf
        dest: /etc/heartbeat/ha.cf
     - name: Copy file
       ansible.builtin.copy:
-       src: ~/update/haresources
+       src: /home/azzeddine/tp_ansible/ansible-playbooks/lamp_ubuntu1804/haresources
        dest: /etc/heartbeat/haresources
     - name: Copy file
       ansible.builtin.copy:
-       src: ~/update/authkeys
+       src: /home/azzeddine/tp_ansible/ansible-playbooks/lamp_ubuntu1804/authkeys
        dest: /etc/heartbeat/authkeys
     - name: Change file ownership
       file:
