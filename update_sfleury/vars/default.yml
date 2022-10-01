@@ -1,7 +1,0 @@
----
-mysql_root_password: "m2resesiee"
-app_user: "sfleury"
-http_host: "esiee.org"
-http_conf: "esiee.org.conf"
-http_port: "80"
-disable_default: true
