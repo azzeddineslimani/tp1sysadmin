@@ -1,0 +1,22 @@
+---
+- hosts: all
+  become: true
+  tasks: 
+    - name: key from path 
+      authorized_key:
+        user: root
+        state: present
+        key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    - name: add user
+      ansible.builtin.user:
+        name: "{{item}}"
+      with_items: 
+        - esiee1
+        - esiee2
+    - name: installation du package htop
+      package:
+        name: htop
+        state: absent
+    - name: Print all available facts
+      ansible.builtin.debug:
+        var: ansible_facts
