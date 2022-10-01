@@ -1,0 +1,37 @@
+---
+- hosts: all
+  become: true
+  #vars_files:
+    #- vars/default.yml
+
+  tasks:
+    - name: Install prerequisites
+      apt: name={{ item }} update_cache=yes state=latest force_apt_get=yes
+      loop: [ 'aptitude' ]
+
+
+    - name: Install Mysql Packages
+      apt: name={{ item }} update_cache=yes state=latest
+      loop: [ 'mysql-server', 'python3-pymysql', 'php', 'php-mysql' ]
+
+   #MySQL Configuration
+    - name: Sets the root password
+      mysql_user:
+        name: root
+        password: "respons11"
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+
+    - name: Removes all anonymous user accounts
+      mysql_user:
+        name: ''
+        host_all: yes
+        state: absent
+        login_user: root
+        login_password: "respons11"
+
+    - name: Removes the MySQL test database
+      mysql_db:
+        name: test
+        state: absent
+        login_user: root
+        login_password: "respons11"
