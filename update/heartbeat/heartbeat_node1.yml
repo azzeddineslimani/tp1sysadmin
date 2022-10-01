@@ -1,0 +1,39 @@
+---
+- hosts: web1
+  become: true
+  tasks:
+    - name: Install prerequisites
+      apt: name={{ item }} update_cache=yes state=latest force_apt_get=yes
+      loop: [ 'aptitude' ]
+    
+    - name: Install heartbeat
+      apt: name={{ item }} update_cache=yes state=latest
+      loop: [ 'heartbeat' ]
+    - name: Copy file
+      ansible.builtin.copy:
+       src: ~/update/ha.cf
+       dest: /etc/heartbeat/ha.cf
+    - name: Copy file
+      ansible.builtin.copy:
+       src: ~/update/haresources
+       dest: /etc/heartbeat/haresources
+    - name: Copy file
+      ansible.builtin.copy:
+       src: ~/update/authkeys
+       dest: /etc/heartbeat/authkeys
+    - name: Change file ownership
+      file:
+       path: /etc/heartbeat/authkeys
+       mode: '0600'
+    - name: Start/stop service
+      ansible.builtin.service:
+       name: heartbeat
+       pattern: /etc/init.d/heartbeat
+       state: stopped
+    - name: Execute the command in remote shell
+      shell: update-rc.d -f heartbeat remove
+    - name: Start service
+      ansible.builtin.service:
+       name: heartbeat
+       pattern: /etc/init.d/heartbeat
+       state: started
