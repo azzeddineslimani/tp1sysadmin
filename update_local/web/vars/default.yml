@@ -1,0 +1,7 @@
+---
+mysql_root_password: "eve"
+app_user: "root"
+http_host: "esiee.org"
+http_conf: "esiee.org.conf"
+http_port: "80"
+disable_default: true

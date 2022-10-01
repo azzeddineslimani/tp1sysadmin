@@ -1,9 +1,0 @@
-logfile /var/log/ha-log
-logfacility local0
-keepalive 2
-deadtime 10
-bcast ens34
-node node1 node2
-auto_failback no
-respawn hacluster /usr/lib/heartbeat/ipfail
-apiauth ipfail gid=haclient uid=hacluster

@@ -1,5 +1,5 @@
 ---
-- hosts: web2
+- hosts: node2
   become: true
   tasks:
     - name: Install prerequisites
@@ -11,15 +11,15 @@
       loop: [ 'heartbeat' ]
     - name: Copy file
       ansible.builtin.copy:
-       src: ~/update/ha2.cf
+       src: /home/azzeddine/tp_ansible/ansible-playbooks/lamp_ubuntu1804/ha2.cf
        dest: /etc/heartbeat/ha.cf
     - name: Copy file
       ansible.builtin.copy:
-       src: ~/update/haresources2
+       src: /home/azzeddine/tp_ansible/ansible-playbooks/lamp_ubuntu1804/haresources2
        dest: /etc/heartbeat/haresources
     - name: Copy file
       ansible.builtin.copy:
-       src: ~/update/authkeys2
+       src: /home/azzeddine/tp_ansible/ansible-playbooks/lamp_ubuntu1804/authkeys2
        dest: /etc/heartbeat/authkeys
     - name: Change file ownership
       file:

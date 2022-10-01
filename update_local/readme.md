@@ -1,6 +1,3 @@
-# LAMP on Ubuntu 18.04
-
-This playbook will install a LAMP environment (**L**inux, **A**pache, **M**ySQL and **P**HP) on an Ubuntu 18.04 machine, as explained in the guide on [How to Use Ansible to Install and Configure LAMP on Ubuntu 18.04](#). A virtualhost will be created with the options specified in the `vars/default.yml` variable file.
 
 ## Settings
 
@@ -12,23 +9,6 @@ This playbook will install a LAMP environment (**L**inux, **A**pache, **M**ySQL 
 - `disable_default`: whether or not to disable the default Apache website. When set to true, your new virtualhost should be used as default website. Default is true.
 
 
-## Running this Playbook
-
-Quickstart guide for those already familiar with Ansible:
-
-### 1. Obtain the playbook
-```shell
-git clone https://github.com/do-community/ansible-playbooks.git
-cd ansible-playbooks/lamp_ubuntu1804
-```
-
-### 2. Customize Options
-
-```shell
-nano vars/default.yml
-```
-
-```yml
 ---
 mysql_root_password: "mysql_root_password"
 app_user: "sammy"
@@ -43,5 +23,3 @@ disable_default: true
 ```command
 ansible-playbook -l [target] -i [inventory file] -u [remote user] playbook.yml
 ```
-
-For more information on how to run this Ansible setup, please check this guide: [soon]().
