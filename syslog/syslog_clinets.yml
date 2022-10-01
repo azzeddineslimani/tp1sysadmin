@@ -37,7 +37,7 @@
         lineinfile:
           dest: /etc/rsyslog.conf
           line: '$ActionResumeRetryCount -1' #new text
-          regexp: '# Include all config files in /etc/rsyslog.d/' #old text
+          regexp: '' #old text
     - name: Start service
       ansible.builtin.service:
           name: rsyslog
