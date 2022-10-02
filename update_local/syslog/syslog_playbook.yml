@@ -70,6 +70,21 @@
 #          regexp: '# Where to place spool and state files' #old text
 #          state: present
 #          create: true
+      - name: "UFW"
+        ufw:
+          rule: allow
+          port: "514"
+          proto: tcp
+      - name: "UFW"
+        ufw:
+          rule: allow
+          port: "514"
+          proto: udp
+
+      - name: reStart service
+        ansible.builtin.service:
+          name: ufw
+          state: restarted
       - name: Start service
         ansible.builtin.service:
           name: rsyslog
