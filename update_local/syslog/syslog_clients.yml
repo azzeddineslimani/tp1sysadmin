@@ -1,0 +1,62 @@
+---
+- hosts: webservers
+  become: true
+  tasks:
+    - name: Install prerequisites
+      apt: name={{ item }} update_cache=yes state=latest force_apt_get=yes
+      loop: [ 'aptitude' ]
+
+    - name: Install rsyslog
+      apt:
+          name: rsyslog
+          state: present
+
+    - name: Start service rsyslog, if not started
+      ansible.builtin.service:
+          name: rsyslog
+          state: started
+    
+    - name: Enable service rsyslog to start on boot
+      ansible.builtin.service:
+          name: rsyslog
+          enabled: yes
+    - name: Add a line to a file if the file does not exist, without passing regexp
+      ansible.builtin.lineinfile:
+          path: /etc/rsyslog.conf
+          line: "*.* @192.168.148.11:514"
+          create: yes
+    - name: Add a line to a file if the file does not exist, without passing regexp
+      ansible.builtin.lineinfile:
+          path: /etc/rsyslog.conf
+          line: "*.* @192.168.148.11:514"
+          create: yes
+
+    - name: Add a line to a file if the file does not exist, without passing regexp
+      ansible.builtin.lineinfile:
+          path: /etc/rsyslog.conf
+          line: $ActionQueueFileName queue
+          create: yes
+    - name: Add a line to a file if the file does not exist, without passing regexp
+      ansible.builtin.lineinfile:
+          path: /etc/rsyslog.conf
+          line: $ActionQueueMaxDiskSpace 1g
+          create: yes
+    - name: Add a line to a file if the file does not exist, without passing regexp
+      ansible.builtin.lineinfile:
+          path: /etc/rsyslog.conf
+          line: $ActionQueueSaveOnShutdown on
+          create: yes
+    - name: Add a line to a file if the file does not exist, without passing regexp
+      ansible.builtin.lineinfile:
+          path: /etc/rsyslog.conf
+          line: $ActionQueueType LinkedList
+          create: yes
+    - name: Add a line to a file if the file does not exist, without passing regexp
+      ansible.builtin.lineinfile:
+          path: /etc/rsyslog.conf
+          line: $ActionResumeRetryCount -1
+          create: yes
+    - name: Start service
+      ansible.builtin.service:
+          name: rsyslog
+          state: restarted

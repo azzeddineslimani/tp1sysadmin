@@ -3,11 +3,15 @@
       hosts: syslog
       become: true
       tasks:
+      - name: Install prerequisites
+        apt: name={{ item }} update_cache=yes state=latest force_apt_get=yes
+        loop: [ 'aptitude' ]
+
       - name: Install rsyslog
         apt:
           name: rsyslog
           state: present
-    
+
       - name: Start service rsyslog, if not started
         ansible.builtin.service:
           name: rsyslog
@@ -17,62 +21,70 @@
         ansible.builtin.service:
           name: rsyslog
           enabled: yes
-      - name: Swap/ edit lines in config
-        lineinfile:
-          dest: /etc/rsyslog.conf
-          line: '$ModLoad imudp' #new text
-          regexp: '#$ModLoad imudp' #old text
-          state: present
-          create: true
-      - name: Swap/ edit lines in config
-        lineinfile:
-          dest: /etc/rsyslog.conf
-          line: '$UDPServerRun 514' #new text
-          regexp: '#$UDPServerRun 514' #old text
-          state: present
-          create: true
-      - name: Swap/ edit lines in config
-        lineinfile:
-          dest: /etc/rsyslog.conf
-          line: '$ModLoad imtcp' #new text
-          regexp: '#$ModLoad imtcp' #old text
-          state: present
-          create: true
-      - name: Swap/ edit lines in config
-        lineinfile:
-          dest: /etc/rsyslog.conf
-          line: '$InputTCPServerRun 514' #new text
-          regexp: '#$InputTCPServerRun 514' #old text
-          state: present
-          create: true
-      - name: Swap/ edit lines in config
-        lineinfile:
-          dest: /etc/rsyslog.conf
-          line: '$AllowedSender TCP, 127.0.0.1, 192.168.148.0/24' #new text
-          regexp: '# Use traditional timestamp format.' #old text
-          state: present
-          create: true
-      - name: Swap/ edit lines in config
-        lineinfile:
-          dest: /etc/rsyslog.conf
-          line: '$AllowedSender UDP, 127.0.0.1, 192.168.148.0/24' #new text
-          regexp: '# Filter duplicated messages' #old text
-          state: present
-          create: true
-      - name: Swap/ edit lines in config
-        lineinfile:
-          dest: /etc/rsyslog.conf
-          line: '$template remote-incoming-logs, "/var/log/%HOSTNAME%/%PROGRAMNAME%.log"' #new text
-          regexp: '# Set the default permissions for all log files.' #old text
-          state: present
-          create: true
-      - name: Swap/ edit lines in config
-        lineinfile:
-          dest: /etc/rsyslog.conf
-          line: '*.* ?remote-incoming-logs' #new text
-          regexp: '# Where to place spool and state files' #old text
-          state: present
-          create: true
+      - name: Add a line to a file if the file does not exist, without passing regexp
+        ansible.builtin.lineinfile:
+          path: /etc/rsyslog.conf
+          line: $ModLoad imudp
+          create: yes
+      - name: Add a line to a file if the file does not exist, without passing regexp
+        ansible.builtin.lineinfile:
+          path: /etc/rsyslog.conf
+          line: $UDPServerRun 514
+          create: yes
+      - name: Add a line to a file if the file does not exist, without passing regexp
+        ansible.builtin.lineinfile:
+          path: /etc/rsyslog.conf
+          line: $ModLoad imtcp
+          create: yes
+      - name: Add a line to a file if the file does not exist, without passing regexp
+        ansible.builtin.lineinfile:
+          path: /etc/rsyslog.conf
+          line: $InputTCPServerRun 514
+          create: yes
+      - name: Add a line to a file if the file does not exist, without passing regexp
+        ansible.builtin.lineinfile:
+          path: /etc/rsyslog.conf
+          line: $AllowedSender TCP, 127.0.0.1, 192.168.148.0/24
+          create: yes
+      - name: Add a line to a file if the file does not exist, without passing regexp
+        ansible.builtin.lineinfile:
+          path: /etc/rsyslog.conf
+          line: $AllowedSender UDP, 127.0.0.1, 192.168.148.0/24
+          create: yes
+      - name: Add a line to a file if the file does not exist, without passing regexp
+        ansible.builtin.lineinfile:
+          path: /etc/rsyslog.conf
+          line: $template remote-incoming-logs, "/var/log/%HOSTNAME%/%PROGRAMNAME%.log"
+          create: yes
+      - name: Add a line to a file if the file does not exist, without passing regexp
+        ansible.builtin.lineinfile:
+          path: /etc/rsyslog.conf
+          line: "*.* ?remote-incoming-logs"
+          create: yes
+
+
+#      - name: Swap/ edit lines in config
+#        lineinfile:
+#          dest: /etc/rsyslog.conf
+#          line: '*.* ?remote-incoming-logs' #new text
+#          regexp: '# Where to place spool and state files' #old text
+#          state: present
+#          create: true
+      - name: "UFW"
+        ufw:
+          rule: allow
+          port: "514"
+          proto: tcp
+      - name: "UFW"
+        ufw:
+          rule: allow
+          port: "514"
+          proto: udp
+
+      - name: reStart service
+        ansible.builtin.service:
+          name: ufw
+          state: restarted
       - name: Start service
         ansible.builtin.service:
           name: rsyslog
