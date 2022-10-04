@@ -1,6 +1,5 @@
 ---
-- hosts: node1
-- hosts: node2
+- hosts: webservers
   become: true
   vars_files:
     - vars/default.yml

@@ -36,13 +36,33 @@
         login_user: root
         login_password: "{{ mysql_root_password }}"
     - name: Swap/ edit lines in config
-        lineinfile:
-          dest: /etc/mysql/mysql.conf.d/mysqld.cnf
-          line: 'bind-address            = 192.168.148.12' #new text
-          regexp: 'bind-address            = 127.0.0.1' #old text
-    - name: Swap/ edit lines in config
-        lineinfile:
-          dest: /etc/mysql/mysql.conf.d/mysqld.cnf
-          line: 'server-id		=2' #new text
-          regexp: '# * Fine Tuning' #old text
-
+      lineinfile:
+        dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+        line: 'bind-address            = 192.168.148.12' #new text
+        regexp: 'bind-address            = 127.0.0.1' #old text
+    - name: Add a line to a file if the file does not exist, without passing regexp
+      ansible.builtin.lineinfile:
+        path: /etc/mysql/mysql.conf.d/mysqld.cnf
+        line: server-id              =2
+        create: yes
+    - name: Start service
+      ansible.builtin.service:
+          name: mysql-server
+          state: restarted
+    - name: cat
+      shell:
+       mysql -u root -p
+       "{{ mysql_root_password }}"
+       CHANGE MASTER TO
+       MASTER_HOST='192.168.148.11',
+       MASTER_USER='root',
+       MASTER_PASSWORD="{{ mysql_root_password }}";
+       exit
+    - name: Restore the snapshot:
+      shell:
+       mysql -uroot < masterdump.sql
+    - name: cat
+      shell:
+       mysql -u root
+       start slave;
+       show slave status\G;
